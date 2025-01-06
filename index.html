@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            position: relative;
+            height: 60px;
+            justify-content: center;
+        }
+        button {
+            padding: 1rem 3rem;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #siBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #siBtn:hover {
+            transform: scale(1.1);
+        }
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+            position: relative;
+        }
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¿Quieres ser mi novia?</h1>
+        <p>Cada día que paso contigo es especial y me gustaría que fuéramos algo más...</p>
+        <div class="buttons">
+            <button id="siBtn">Sí</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+    <div class="hearts" id="hearts"></div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const siBtn = document.getElementById('siBtn');
+        const hearts = document.getElementById('hearts');
+        const container = document.querySelector('.container');
+        const buttonsDiv = document.querySelector('.buttons');
+
+        noBtn.addEventListener('click', moveButton);
+
+        function moveButton(e) {
+            e.preventDefault();
+            const buttonRect = buttonsDiv.getBoundingClientRect();
+            const maxX = buttonRect.width - noBtn.offsetWidth;
+            const maxY = buttonRect.height - noBtn.offsetHeight;
+            
+            noBtn.style.position = 'absolute';
+            const x = Math.random() * maxX;
+            const y = Math.random() * maxY;
+            
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        }
+
+        siBtn.addEventListener('click', () => {
+            hearts.style.display = 'block';
+            container.innerHTML = '<h1>¡Gracias, sabias que ibas a decir que sí. Lu te amo! ❤️</h1>';
+            createHearts();
+        });
+
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '100vh';
+                heart.style.fontSize = '2rem';
+                heart.style.animation = 'float 4s linear';
+                hearts.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 4000);
+            }, 100);
+        }
+
+        document.head.insertAdjacentHTML('beforeend', `
+            <style>
+                @keyframes float {
+                    to {
+                        transform: translateY(-100vh);
+                    }
+                }
+            </style>
+        `);
+    </script>
+</body>
+</html>
